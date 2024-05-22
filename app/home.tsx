@@ -1,11 +1,38 @@
-import { View, Text, ScrollView, Image, TextInput } from 'react-native';
-import React from 'react';
+// external import
+import { View, Text, ScrollView, Image, TextInput, BackHandler } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { BellIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
+import axios from 'axios';
+
+// internal import
 import Categories from '@/components/Categories';
 
 const home = () => {
+
+    const [activeCategory, setActiveCategory] = useState<String>('Starter');
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await axios.get('https://themealdb.com/api/json/v1/1/categories.php');
+
+            if (response && response.data) {
+                setCategories(response.data.categories);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     return (
         <View className='flex-1 bg-white'>
 
@@ -45,10 +72,17 @@ const home = () => {
                 </View>
 
 
-
                 <View>
-                    <Categories />
+                    {
+                        categories.length > 0 &&
+                        <Categories
+                            activeCategory={activeCategory}
+                            setActiveCategory={setActiveCategory}
+                            categories={categories}
+                        />
+                    }
                 </View>
+
 
 
 
