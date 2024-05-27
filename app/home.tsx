@@ -8,11 +8,22 @@ import axios from 'axios';
 
 // internal import
 import Categories from '@/components/Categories';
+import Recipes from '@/components/Recipes';
 
 const home = () => {
 
-    const [activeCategory, setActiveCategory] = useState<String>('Starter');
-    const [categories, setCategories] = useState([]);
+    const [activeCategory, setActiveCategory] = useState<string>("Beef");
+    const [categories, setCategories] = useState<{ idCategory: string, strCategory: string, strCategoryThumb: string, strCategoryDescription: string; }[]>([]);
+    const [meals, setMeals] = useState<{ idMeal: string, strMealThumb: string, strMeal: string; }[]>([]);
+
+    const handleChangeCategory = (categoryName: string) => {
+
+        setMeals([]);
+
+        setActiveCategory(categoryName);
+        fetchMeals(categoryName);
+    };
+
 
     const fetchCategories = async () => {
         try {
@@ -27,10 +38,24 @@ const home = () => {
         }
     };
 
+    const fetchMeals = async (categoryName: string = 'Beef') => {
+        try {
+            const response = await axios.get(`https://themealdb.com/api/json/v1/1/filter.php?c=${categoryName}`);
+
+            if (response && response.data) {
+                setMeals(response.data.meals);
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
 
 
     useEffect(() => {
         fetchCategories();
+        fetchMeals();
     }, []);
 
     return (
@@ -77,12 +102,15 @@ const home = () => {
                         categories.length > 0 &&
                         <Categories
                             activeCategory={activeCategory}
-                            setActiveCategory={setActiveCategory}
+                            handleChangeCategory={handleChangeCategory}
                             categories={categories}
                         />
                     }
                 </View>
 
+
+
+                <Recipes categories={categories} mealData={meals} />
 
 
 

@@ -7,13 +7,13 @@ import Animated, { FadeInDown } from 'react-native-reanimated';
 
 
 interface Props {
-    activeCategory: String,
-    setActiveCategory: Dispatch<SetStateAction<String>>;
-    categories: { idCategory: String, strCategory: String, strCategoryThumb: string, strCategoryDescription: String; }[];
+    activeCategory: string,
+    categories: { idCategory: string, strCategory: string, strCategoryThumb: string, strCategoryDescription: string; }[];
+    handleChangeCategory: (category: string) => void;
 }
 
 
-const Categories = ({ activeCategory, setActiveCategory, categories }: Props) => {
+const Categories = ({ activeCategory, handleChangeCategory, categories }: Props) => {
     return (
         <Animated.View entering={FadeInDown.duration(500).springify()}>
             <ScrollView
@@ -32,7 +32,7 @@ const Categories = ({ activeCategory, setActiveCategory, categories }: Props) =>
                         return (<TouchableOpacity
                             key={index}
                             className='flex items-center space-y-1'
-                            onPress={() => setActiveCategory(category.strCategory)}
+                            onPress={() => handleChangeCategory(category.strCategory)}
                         >
                             <View className={'rounded-full p-[6px]' + activeButtomClass}>
                                 <Image

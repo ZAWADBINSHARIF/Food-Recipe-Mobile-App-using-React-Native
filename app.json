@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.zawadbinsharif.Food_Recipe_App"
     },
     "web": {
       "bundler": "metro",
