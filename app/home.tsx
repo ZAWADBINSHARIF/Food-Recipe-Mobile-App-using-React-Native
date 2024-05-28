@@ -1,14 +1,14 @@
 // external import
-import { View, Text, ScrollView, Image, TextInput, BackHandler } from 'react-native';
+import { View, Text, ScrollView, Image, TextInput, BackHandler, Alert } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { BellIcon, MagnifyingGlassIcon } from 'react-native-heroicons/outline';
 import axios from 'axios';
 
 // internal import
 import Categories from '@/components/Categories';
 import Recipes from '@/components/Recipes';
+import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 
 const home = () => {
 
@@ -52,6 +52,21 @@ const home = () => {
     };
 
 
+    BackHandler.addEventListener('hardwareBackPress', function () {
+
+        Alert.alert('Exit', 'Are you sure to exit?', [
+            {
+                text: 'Cancel',
+                style: 'cancel',
+            },
+            { text: 'Yes', onPress: () => BackHandler.exitApp() },
+        ],
+            { cancelable: true }
+        );
+
+        return true;
+    });
+
 
     useEffect(() => {
         fetchCategories();
@@ -72,7 +87,7 @@ const home = () => {
 
                 <View className="mx-4 flex-row justify-between items-center mb-2">
                     <Image source={require('@/assets/images/avatar.png')} style={{ height: hp(5.5), width: hp(5) }} />
-                    <BellIcon size={hp(4)} color='gray' />
+                    <FontAwesome6 name="bell" size={hp(3)} color="gray" />
                 </View>
 
 
@@ -92,7 +107,7 @@ const home = () => {
                     />
 
                     <View className='bg-white rounded-full p-3'>
-                        <MagnifyingGlassIcon size={hp(2.5)} color={'gray'} strokeWidth={3} />
+                        <FontAwesome6 name="magnifying-glass" size={hp(2)} color="gray" />
                     </View>
                 </View>
 

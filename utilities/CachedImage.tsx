@@ -27,7 +27,7 @@ const CachedImage = (props: any) => {
                             resolve(reader.result as string);
                         };
                     });
-                    // console.log(typeof (base64Data));
+
                     await AsyncStorage.setItem(uri, base64Data);
                     setCachedSource({ uri: base64Data });
                 }
