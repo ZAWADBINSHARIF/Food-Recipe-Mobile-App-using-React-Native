@@ -1,6 +1,6 @@
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
-import React, { Dispatch, SetStateAction } from 'react';
-import { categoryData } from '@/constants';
+import { View, Text, TouchableOpacity, ScrollView, Image } from 'react-native';
+import React from 'react';
+// import { Image } from 'expo-image';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 

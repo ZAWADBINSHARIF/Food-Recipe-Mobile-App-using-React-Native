@@ -3,14 +3,18 @@ import { View, Text, ScrollView, Image, TextInput, BackHandler, Alert } from 're
 import React, { useEffect, useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { router, usePathname } from 'expo-router';
 import axios from 'axios';
 
 // internal import
 import Categories from '@/components/Categories';
 import Recipes from '@/components/Recipes';
-import { FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
+import { FontAwesome6 } from '@expo/vector-icons';
+
 
 const home = () => {
+
+    const pathname = usePathname();
 
     const [activeCategory, setActiveCategory] = useState<string>("Beef");
     const [categories, setCategories] = useState<{ idCategory: string, strCategory: string, strCategoryThumb: string, strCategoryDescription: string; }[]>([]);
@@ -54,17 +58,24 @@ const home = () => {
 
     BackHandler.addEventListener('hardwareBackPress', function () {
 
-        Alert.alert('Exit', 'Are you sure to exit?', [
-            {
-                text: 'Cancel',
-                style: 'cancel',
-            },
-            { text: 'Yes', onPress: () => BackHandler.exitApp() },
-        ],
-            { cancelable: true }
-        );
+        if (pathname === '/home') {
+
+            Alert.alert('Exit', 'Are you sure to exit?', [
+                {
+                    text: 'Cancel',
+                    style: 'cancel',
+                },
+                { text: 'Yes', onPress: () => BackHandler.exitApp() },
+            ],
+                { cancelable: true }
+            );
+
+        } else {
+            router.back();
+        }
 
         return true;
+
     });
 
 

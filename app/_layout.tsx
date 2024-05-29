@@ -10,6 +10,11 @@ export default function RootLayout() {
     >
       <Stack.Screen name="index" />
       <Stack.Screen name="home" />
+      <Stack.Screen name="recipeDetails"
+      // options={{
+      //   'animation': 'slide_from_bottom'
+      // }}
+      />
     </Stack>
   );
 }

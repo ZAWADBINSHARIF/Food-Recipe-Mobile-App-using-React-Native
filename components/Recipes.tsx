@@ -1,12 +1,11 @@
-import { View, Text, Pressable, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable } from 'react-native';
+import { Image } from 'expo-image';
 import React from 'react';
 import { heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import MasonryList from '@react-native-seoul/masonry-list';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import Loading from './Loading';
-import CachedImage from '@/utilities/CachedImage';
-import FastImage from 'react-native-fast-image';
-
+import { Link } from 'expo-router';
+import { MasonryFlashList } from "@shopify/flash-list";
 
 interface Props {
     categories: Array<object>,
@@ -32,17 +31,16 @@ const Recipes = ({ categories, mealData }: Props) => {
                                 className='mt-20'
                             />
                         ) :
-                        (<MasonryList
-                            data={mealData}
-                            keyExtractor={(item): string => item.idMeal}
-                            numColumns={2}
-                            showsVerticalScrollIndicator={false}
-                            renderItem={({ item, i }: any) => <RecipeCard index={i} item={item} />}
-                            // refreshing={isLoadingNext}
-                            // onRefresh={() => refetch({ first: ITEM_CNT })}
-                            onEndReachedThreshold={0.1}
-                        // onEndReached={() => loadNext(ITEM_CNT)}
-                        />)
+
+
+                        (
+                            <MasonryFlashList
+                                data={mealData}
+                                numColumns={2}
+                                renderItem={({ item, index }) => <RecipeCard item={item} index={index} />}
+                                estimatedItemSize={hp(35)}
+                            />
+                        )
 
                 }
 
@@ -63,17 +61,20 @@ const RecipeCard = ({ item, index }: any) => {
         <Animated.View
             entering={FadeInDown.delay(index * 100).duration(600).springify().damping(12)}
         >
-            <Pressable
-                style={{
-                    width: '100%',
-                    paddingLeft: isEvent ? 0 : 8,
-                    paddingRight: isEvent ? 8 : 0,
-                }}
-                className='flex justify-center mb-4 space-y-1'
-            >
+            <Link href={{
+                pathname: '/recipeDetails',
+                params: { ...item }
+            }} asChild>
+                <Pressable
+                    style={{
+                        width: '100%',
+                        paddingLeft: isEvent ? 0 : 8,
+                        paddingRight: isEvent ? 8 : 0,
+                    }}
+                    className='flex justify-center mb-4 space-y-1'
+                >
 
-                {/* <Animated.View>
-                    <FastImage
+                    <Animated.Image
                         source={{ uri: item.strMealThumb }}
                         style={{
                             width: '100%',
@@ -81,37 +82,17 @@ const RecipeCard = ({ item, index }: any) => {
                             borderRadius: 35
                         }}
                         className=' bg-black/5'
+                        sharedTransitionTag={item?.idMeal as string}
                     />
-                </Animated.View> */}
 
+                    <Text className=' font-semibold ml-2 text-neutral-600'>
+                        {
+                            item.strMeal.length > 20 ? item.strMeal.slice(0, 20) + "..." : item.strMeal
 
-                {/* <Image
-                    source={{ uri: item.strMealThumb }}
-                    style={{
-                        width: '100%',
-                        height: isEvent ? hp(25) : hp(35),
-                        borderRadius: 35
-                    }}
-                    className=' bg-black/5'
-                /> */}
-
-                <CachedImage
-                    uri={item.strMealThumb}
-                    style={{
-                        width: '100%',
-                        height: isEvent ? hp(25) : hp(35),
-                        borderRadius: 35
-                    }}
-                    className=' bg-black/5'
-                />
-
-                <Text className=' font-semibold ml-2 text-neutral-600'>
-                    {
-                        item.strMeal.length > 20 ? item.strMeal.slice(0, 20) + "..." : item.strMeal
-
-                    }
-                </Text>
-            </Pressable>
+                        }
+                    </Text>
+                </Pressable>
+            </Link>
         </Animated.View>
     );
 };
