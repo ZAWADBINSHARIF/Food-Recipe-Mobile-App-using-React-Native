@@ -1,4 +1,12 @@
-# Welcome to your Expo app 👋
+# Food Recipe app
+![Demo video](./github/video.gif)
+![home](./github/1.jpg)
+![Food view](./github/2.jpg)
+
+
+
+
+## Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
